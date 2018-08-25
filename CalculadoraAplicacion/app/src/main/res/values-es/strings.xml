@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">CalculadoraAplicacion</string>
+    <string name="action_settings">Settings</string>
+    <string name="str_number_1">Digite numero 1</string>
+    <string name="str_number_2">Digite numero 2</string>
+    <string name="btn_sum">+</string>
+    <string name="btn_sub">-</string>
+    <string name="btn_pro">*</string>
+    <string name="btn_div">/</string>
+    <string name="required_field">Este campo es obligatorio</string>
+</resources>

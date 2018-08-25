@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">TemperatureApp</string>
+    <string name="action_settings">Settings</string>
+    <string name="required_field">Valor requerido</string>
+</resources>

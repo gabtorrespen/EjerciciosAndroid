@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PizzaAplicacion</string>
+    <string name="action_settings">Settings</string>
+    <string name="text_example">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean magna est, euismod ac metus id, laoreet finibus lacus. Suspendisse non ullamcorper risus. In tempor nunc in felis pulvinar, sed ullamcorper felis bibendum. Maecenas tellus leo, auctor et gravida id, porttitor luctus eros. Aliquam non nisi mi. Nunc commodo at nibh quis dapibus. Sed rutrum quam orci, eu semper lacus facilisis id. Morbi feugiat odio id tincidunt consectetur. Vivamus aliquet tempus enim at imperdiet. Suspendisse dapibus magna vel odio posuere, sed dapibus tellus tincidunt. Quisque rhoncus diam metus, eget posuere neque hendrerit sed. Etiam egestas urna id libero hendrerit, facilisis faucibus arcu convallis. Suspendisse eleifend, felis vestibulum gravida venenatis, sapien metus vulputate metus, eu sagittis sapien mi placerat lacus. Curabitur ultrices enim at ipsum maximus, a mattis urna sodales.</string>
+</resources>

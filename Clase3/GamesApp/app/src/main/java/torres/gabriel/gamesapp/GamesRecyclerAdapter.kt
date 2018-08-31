@@ -11,11 +11,14 @@ import torres.gabriel.gamesapp.Models.Game
 /**
  * Created by Gabriel on 25/08/2018.
  */
-class GamesRecyclerAdapter(private val games: ArrayList<Game>) :
+class GamesRecyclerAdapter(private val games: ArrayList<Game>, private val listener: OnItemClicked) :
         RecyclerView.Adapter<GamesRecyclerAdapter.GameViewHolder>() {
 
-//    private val images = intArrayOf(R.drawable.ic_argentina, R.drawable.ic_bolivia,R.drawable.ic_colombia, R.drawable.ic_costa_rica
-//            , R.drawable.ic_cuba, R.drawable.ic_costa_rica, R.drawable.ic_chile, R.drawable.ic_mexico, R.drawable.ic_el_salvador)
+    class GameViewHolder(val view: View) : RecyclerView.ViewHolder(view)
+
+    interface OnItemClicked {
+        fun onItemClick(position: Int,view: View)
+    }
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
@@ -29,28 +32,21 @@ class GamesRecyclerAdapter(private val games: ArrayList<Game>) :
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         holder.view.txtName.text = games[position].name
         holder.view.txtDeveloper.text = games[position].developer
-        //holder.view.imagen.drawable = images[countries[position]!!.flag]
+
+        holder.view.ivGame.setOnClickListener { view ->
+            listener.onItemClick(position,view)
+        }
+
+        holder.view.btn_delete.setOnClickListener { view ->
+            listener.onItemClick(position,view)
+        }
+
+        holder.view.btn_edit.setOnClickListener { view ->
+            listener.onItemClick(position,view)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = games.size
-
-    class GameViewHolder(val view: View) : RecyclerView.ViewHolder(view), View.OnClickListener{
-
-        init {
-            this.view.ivGame.setOnClickListener(this)
-            this.view.btn_delete.setOnClickListener(this)
-            this.view.btn_edit.setOnClickListener(this)
-        }
-
-        override fun onClick(v: View?) {
-            adapterPosition
-            when(v!!.id){
-                R.id.ivGame->Toast.makeText(view.context,"DETAIL",Toast.LENGTH_LONG).show()
-                R.id.btn_delete->Toast.makeText(view.context,"DELETE",Toast.LENGTH_LONG).show()
-                R.id.btn_edit->Toast.makeText(view.context,"EDIT",Toast.LENGTH_LONG).show()
-            }
-        }
-    }
 
 }

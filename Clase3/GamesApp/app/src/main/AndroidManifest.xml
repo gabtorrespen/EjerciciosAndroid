@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
+            android:label="@string/mainActivity_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,7 +29,7 @@
                 android:value="torres.gabriel.gamesapp.MainActivity" />
         </activity>
         <activity
-            android:name=".Models.AddEditActivity"
+            android:name=".AddEditActivity"
             android:label="@string/title_activity_add_edit"
             android:parentActivityName=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">

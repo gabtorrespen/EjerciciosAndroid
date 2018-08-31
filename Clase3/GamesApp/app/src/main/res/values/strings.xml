@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">GamesApp</string>
-    <string name="action_settings">Settings</string>
-    <string name="title_activity_detail">DetailActivity</string>
-    <string name="title_activity_add_edit">AddEditActivity</string>
+    <string name="action_settings">Configuración</string>
+    <string name="title_activity_detail">Detalle</string>
+    <string name="title_activity_add_edit"></string>
+    <string name="mainActivity_name">Juegos</string>
 </resources>

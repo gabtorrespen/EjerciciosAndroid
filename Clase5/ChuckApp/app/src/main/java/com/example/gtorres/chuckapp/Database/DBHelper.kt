@@ -11,7 +11,7 @@ class DBHelper  : OrmLiteSqliteOpenHelper(App.instance,
         DBNAME, null, DBVERSION) {
 
     companion object {
-        var DBVERSION = 1
+        var DBVERSION = 2
         var DBNAME = "joke.db"
 
         //Joke

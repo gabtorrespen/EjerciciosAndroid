@@ -1,6 +1,7 @@
 package com.example.gtorres.chuckapp
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,6 +10,7 @@ import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.content_add.*
 import android.widget.CheckBox
+import com.example.gtorres.chuckapp.Utils.Constantes
 
 
 class AddActivity : AppCompatActivity() {
@@ -48,14 +50,16 @@ class AddActivity : AppCompatActivity() {
     }
 
     fun submit(view: View){
-        val name = etJoke.text.toString()
+        val jokeText = etJoke.text.toString()
 
-        if (!name.isEmpty()){
-            val intent = Intent()
+        if (!jokeText.isEmpty()){
 
-            //intent.putExtra("game", Game(newId+1,name,developer,description))
+            val cv = ContentValues()
+            cv.put("joke", jokeText)
+            cv.put("categories", categories.toString())
+            contentResolver.insert(Constantes.JOKE_URI, cv)
 
-            setResult(Activity.RESULT_OK,intent)
+            setResult(Activity.RESULT_OK,Intent())
             finish()
         }
         else

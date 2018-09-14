@@ -7,10 +7,10 @@ import java.util.ArrayList
 
 @DatabaseTable
 class Joke:Serializable  {
-    @DatabaseField
+    @DatabaseField (generatedId = true)
     var id:Int? = null
     @DatabaseField
     var joke: String? = null
     @DatabaseField
-    var categories:ArrayList<String>? = null
+    var categories:String? = null
 }

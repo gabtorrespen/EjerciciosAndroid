@@ -41,12 +41,12 @@ class AppProvider: ContentProvider()  {
 
         when (uriType) {
             JOKE_ID -> {
-                queryBuilder.tables = DBHelper.JOKE_COLUMN_ID
+                queryBuilder.tables = DBHelper.JOKE_TABLE_NAME
                 queryBuilder.appendWhere(DBHelper.JOKE_COLUMN_ID + "="
                         + uri!!.lastPathSegment)
             }
             JOKE -> {
-                queryBuilder.tables = DBHelper.JOKE_COLUMN_ID
+                queryBuilder.tables = DBHelper.JOKE_TABLE_NAME
             }
             else -> throw IllegalArgumentException("Unknown URI")
         }
@@ -91,7 +91,7 @@ class AppProvider: ContentProvider()  {
             }
             JOKE_ID -> {
                 table = DBHelper.JOKE_TABLE_NAME
-                selection += DBHelper.JOKE_COLUMN_ID + "=" + uri!!.lastPathSegment
+                selection = DBHelper.JOKE_COLUMN_ID + "=" + uri!!.lastPathSegment
             }
             else -> throw IllegalArgumentException("Unknown URI")
         }

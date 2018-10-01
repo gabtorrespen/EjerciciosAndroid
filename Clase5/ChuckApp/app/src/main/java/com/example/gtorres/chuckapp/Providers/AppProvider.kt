@@ -76,6 +76,34 @@ class AppProvider: ContentProvider()  {
         return Uri.parse("$table/$id")
     }
 
+    override fun bulkInsert(uri: Uri?, values: Array<out ContentValues>?): Int {
+
+        val table: String
+        val uriType = sUriMatcher.match(uri)
+        val sqlDB = myDB!!.writableDatabase
+
+        when (uriType) {
+            JOKE -> {
+                table = DBHelper.JOKE_TABLE_NAME
+            }
+            else -> throw IllegalArgumentException("Unknown URI")
+        }
+
+        sqlDB.beginTransaction()
+
+        try{
+            for (cv in values!!){
+                val newId = sqlDB.insert(table, null, cv)
+            }
+            context.contentResolver.notifyChange(uri, null)
+            sqlDB.setTransactionSuccessful()
+        }finally {
+            sqlDB.endTransaction()
+        }
+
+        return values!!.size
+    }
+
     override fun update(p0: Uri?, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
         throw IllegalArgumentException("Unknown URI")
     }

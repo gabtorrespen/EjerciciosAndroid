@@ -29,7 +29,8 @@
 
         <provider
             android:authorities="com.example.gtorres.chuckapp.Providers.AppProvider"
-            android:name=".Providers.AppProvider"/>
+            android:name=".Providers.AppProvider"
+            android:exported="true"/>
     </application>
 
 </manifest>

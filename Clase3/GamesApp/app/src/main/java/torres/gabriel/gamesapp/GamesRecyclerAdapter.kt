@@ -20,6 +20,8 @@ class GamesRecyclerAdapter(private val games: ArrayList<Game>, private val liste
         fun onItemClick(position: Int,view: View)
     }
 
+    private val images = intArrayOf(R.drawable.controller, R.drawable.logo_gears)
+
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
                                     viewType: Int): GamesRecyclerAdapter.GameViewHolder {
@@ -32,6 +34,7 @@ class GamesRecyclerAdapter(private val games: ArrayList<Game>, private val liste
     override fun onBindViewHolder(holder: GameViewHolder, position: Int) {
         holder.view.txtName.text = games[position].name
         holder.view.txtDeveloper.text = games[position].developer
+        holder.view.ivGame.setImageResource(games[position].idImage!!)
 
         holder.view.ivGame.setOnClickListener { view ->
             listener.onItemClick(position,view)

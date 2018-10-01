@@ -28,13 +28,17 @@ class AddEditActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        newId = intent.getIntExtra("IdNewGame",0)
+        spinner.adapter = ImageAdapter(this)
 
-        if (newId == 0) {
+        newId = intent.getIntExtra("IdNewGame",-1)
+
+        if (newId == -1) {
             game = intent.getSerializableExtra("Game") as Game
             initEdit()
         }
     }
+
+
 
     fun initEdit(){
         etName.setText(game!!.name)
@@ -50,15 +54,15 @@ class AddEditActivity : AppCompatActivity() {
         if (!name.isEmpty() && !developer.isEmpty() && !description.isEmpty()){
             var intent = Intent()
 
-            if(newId != 0){
+            if(newId != -1){
                 //Create
-                intent.putExtra("game", Game(newId+1,name,developer,description))
-
+                intent.putExtra("game", Game(newId+1,name,developer,description,spinner.selectedItem as Int))
             }else{
                 //Edit
                 game!!.name = name
                 game!!.developer = developer
                 game!!.description = description
+                game!!.idImage = spinner.selectedItem as Int
 
                 intent.putExtra("game", game)
             }

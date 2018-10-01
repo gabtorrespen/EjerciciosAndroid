@@ -32,6 +32,8 @@ class MainActivity : AppCompatActivity(), CustomRecyclerAdapter.OnItemClicked{
         var REQUEST_ADD = 100
     }
 
+    var longMillis:Long = 0
+
     lateinit var data: ArrayList<Joke>
     lateinit var adapter: CustomRecyclerAdapter
 
@@ -47,12 +49,15 @@ class MainActivity : AppCompatActivity(), CustomRecyclerAdapter.OnItemClicked{
         rvJokes.adapter = adapter
 
         //Eliminar todas las bromas y cargar de la página
-        contentResolver.delete(Constantes.JOKE_URI,null,null)
-        getJokesFromAPI()
+
         //loadJokes()
 
         fab.setOnClickListener { view ->
-            startActivityForResult(Intent(this,AddActivity::class.java),REQUEST_ADD)
+            //startActivityForResult(Intent(this,AddActivity::class.java),REQUEST_ADD)
+            //Eliminar todas las bromas y cargar de la página
+            contentResolver.delete(Constantes.JOKE_URI,null,null)
+            longMillis = System.currentTimeMillis()
+            getJokesFromAPI()
         }
     }
 
@@ -64,7 +69,7 @@ class MainActivity : AppCompatActivity(), CustomRecyclerAdapter.OnItemClicked{
     fun getJokesFromAPI(){
         // Instantiate the RequestQueue.
         val queue = Volley.newRequestQueue(this)
-        val url = "http://api.icndb.com/jokes/random/50/"
+        val url = "http://api.icndb.com/jokes/random/600/"
 
         val stringRequest = StringRequest(Request.Method.GET, url,
                 Response.Listener<String> { response ->
@@ -72,12 +77,20 @@ class MainActivity : AppCompatActivity(), CustomRecyclerAdapter.OnItemClicked{
                     val listType = object : TypeToken<ResponseJoke>() {}.type
                     val jokeResponse = Gson().fromJson<ResponseJoke>(response, listType)
 
+                    val values:ArrayList<android.content.ContentValues> = ArrayList()
+
                     jokeResponse.value!!.forEach {
                         val cv = ContentValues()
                         cv.put("joke", it.joke)
                         cv.put("categories", it.categories.toString())
-                        contentResolver.insert(Constantes.JOKE_URI, cv)
+                        values.add(cv)
+                        //contentResolver.insert(Constantes.JOKE_URI, cv)
                     }
+
+                    val a = arrayOfNulls<ContentValues>(values.size)
+
+                    contentResolver.bulkInsert(Constantes.JOKE_URI, values.toArray(a))
+                    Toast.makeText(this,"MILLIS: ${System.currentTimeMillis() - longMillis}",Toast.LENGTH_LONG).show()
                     loadJokes()
                 },
                 Response.ErrorListener {

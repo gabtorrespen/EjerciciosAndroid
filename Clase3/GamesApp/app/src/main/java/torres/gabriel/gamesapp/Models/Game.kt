@@ -9,8 +9,10 @@ class Game(id:Int,name: String, developer: String, description: String) : Serial
     var developer:String? = developer
     var description:String? = description
     var image:ByteArray? =null
+    var idImage:Int?=null
 
-//    constructor(name: String, city: String, flag: Int) : this(name,city,"") {
-//        //this.flag = flag
-//    }
+    constructor(id:Int,name: String, developer: String, description: String,idImage:Int)
+            : this(id,name,developer,description) {
+        this.idImage = idImage
+    }
 }

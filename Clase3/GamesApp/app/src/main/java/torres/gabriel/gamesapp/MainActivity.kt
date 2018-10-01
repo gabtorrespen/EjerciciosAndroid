@@ -43,8 +43,8 @@ class MainActivity : AppCompatActivity(),GamesRecyclerAdapter.OnItemClicked {
 
     fun initData(){
         list = ArrayList<Game>()
-        list.add(Game(1,"Crash bandicoot","Naughty Dog","asd"))
-        list.add(Game(2,"Crash bandicoot","Naughty Dog","asd"))
+        //list.add(Game(1,"Crash bandicoot","Naughty Dog","asd"))
+        //list.add(Game(2,"Crash bandicoot","Naughty Dog","asd"))
     }
 
     override fun onItemClick(position: Int, view: View) {

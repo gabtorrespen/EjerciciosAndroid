@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), CustomRecyclerAdapter.OnItemClicked{
 
     var longMillis:Long = 0
 
-    lateinit var data: ArrayList<Joke>
+    //lateinit var data: ArrayList<Joke>
     lateinit var adapter: CustomRecyclerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

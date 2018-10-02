@@ -1,24 +1,52 @@
 package torres.gabriel.songapp
 
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.content_main.*
+import torres.gabriel.songapp.model.Song
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(),AddEditFragment.OnFragmentInteractionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        replaceFragment(ListActivityFragment())
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+            val frag = AddEditFragment.newInstance(Song())
+            replaceFragment(frag)
+            fab.visibility = View.INVISIBLE
         }
+    }
+
+    private fun replaceFragment(frag: Fragment) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, frag)
+                .commit()
+    }
+
+    override fun onBackPressed() {
+
+        val actualFrag:Fragment = supportFragmentManager.findFragmentById(R.id.fragment_container) 
+
+        if(actualFrag !is ListActivityFragment) {
+            fab.visibility = View.VISIBLE
+            replaceFragment(ListActivityFragment())
+        }
+        else
+            super.onBackPressed()
+    }
+
+    override fun onFragmentInteraction(uri: Uri?) {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

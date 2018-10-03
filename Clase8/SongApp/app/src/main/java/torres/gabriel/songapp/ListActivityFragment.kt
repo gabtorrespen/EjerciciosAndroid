@@ -17,11 +17,22 @@ import torres.gabriel.songapp.model.Song
 import torres.gabriel.songapp.network.song.SongInteractor
 import torres.gabriel.songapp.util.Constants
 
-class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, SongInteractor.SongCallback {
+class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, SongInteractor.SongListCallback {
 
     lateinit var adapter: CustomRecyclerAdapter
 
     private var mListener: ListInteractionListener?=null
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+        if (context is ListInteractionListener) {
+            mListener = context
+        } else {
+            throw RuntimeException(context.toString()
+                    + " must implement ListInteractionListener")
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -37,17 +48,6 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
         rvSongs.adapter = adapter
 
         SongInteractor(this).getSongs()
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-
-        if (context is ListInteractionListener) {
-            mListener = context
-        } else {
-            throw RuntimeException(context.toString()
-                    + " must implement ListInteractionListener")
-        }
     }
 
     override fun onDetach() {
@@ -85,8 +85,14 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
         loadSongs()
     }
 
+    override fun onSongDeleted(id:Int) {
+        activity!!.contentResolver .delete( Uri.withAppendedPath(Constants.SONG_URI,id.toString()),null,null)
+        App.instance.showToast("Eliminado")
+        loadSongs()
+    }
+
     override fun onError(error: Throwable) {
-        Toast.makeText(activity,error.message,Toast.LENGTH_SHORT).show()
+        App.instance.showToast(error.message.toString())
     }
 
     override fun onItemClick(position: Int, view: View) {
@@ -115,9 +121,7 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
         }
 
         builder.setNegativeButton("Eliminar"){_,_ ->
-            activity!!.contentResolver .delete( Uri.withAppendedPath(Constants.SONG_URI,position.toString()),null,null)
-            App.instance.showToast("Eliminado")
-            loadSongs()
+            SongInteractor(this).deleteSong(position)
         }
 
         builder.setNeutralButton("Cancelar"){_,_ ->

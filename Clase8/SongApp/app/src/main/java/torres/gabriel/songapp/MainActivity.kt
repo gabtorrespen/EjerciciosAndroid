@@ -1,8 +1,6 @@
 package torres.gabriel.songapp
 
-import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
@@ -10,7 +8,6 @@ import android.view.MenuItem
 import android.view.View
 
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import torres.gabriel.songapp.model.Song
 
 class MainActivity : AppCompatActivity()
@@ -47,14 +44,14 @@ class MainActivity : AppCompatActivity()
             super.onBackPressed()
     }
 
-    override fun onAddedSong() {
-    }
-
-    override fun onEditedSong() {
+    override fun onSongsChanged() {
+        replaceFragment(ListActivityFragment())
+        fab.visibility = View.VISIBLE
     }
 
     override fun onShowEditSong(song: Song) {
         replaceFragment(AddEditFragment().newInstance(song))
+        fab.visibility = View.INVISIBLE
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

@@ -2,6 +2,7 @@ package torres.gabriel.songapp
 
 import android.content.ContentValues
 import android.content.Context
+import android.net.Uri
 import android.support.v4.app.Fragment
 import android.os.Bundle
 import android.support.v7.app.AlertDialog
@@ -20,6 +21,8 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
 
     lateinit var adapter: CustomRecyclerAdapter
 
+    private var mListener: ListInteractionListener?=null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -32,11 +35,29 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
         rvSongs.layoutManager = layoutManager
         adapter = CustomRecyclerAdapter(this)
         rvSongs.adapter = adapter
+
+        SongInteractor(this).getSongs()
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        SongInteractor(this).getSongs()
+
+        if (context is ListInteractionListener) {
+            mListener = context
+        } else {
+            throw RuntimeException(context.toString()
+                    + " must implement ListInteractionListener")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        mListener = null
+    }
+
+    fun onShowEditSong(song:Song) {
+        if(mListener != null)
+            mListener!!.onShowEditSong(song)
     }
 
     fun loadSongs(){
@@ -51,6 +72,7 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
 
         songs.forEach {
             val cv = ContentValues()
+            cv.put("id",it.id)
             cv.put("nombre", it.nombre)
             cv.put("autor", it.autor)
             cv.put("album", it.album)
@@ -74,13 +96,28 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
 
         val builder = AlertDialog.Builder(context!!)
 
-        builder.setTitle("Eliminar")
-        builder.setMessage("¿Desea eliminar la canción?")
+        builder.setTitle("Seleccione")
+        builder.setMessage("¿Qué desea hacer?")
 
-        builder.setPositiveButton("Confirmar"){dialog, which ->
-//            contentResolver.delete( Uri.withAppendedPath(Constantes.JOKE_URI,position.toString()),null,null)
-//            App.instance.showToast("Eliminado")
-//            loadJokes()
+        builder.setPositiveButton("Editar"){dialog, which ->
+
+            val cursor = activity!!.contentResolver.
+                    query( Uri.withAppendedPath(Constants.SONG_URI,position.toString()),null,null,null,null)
+
+            cursor.moveToFirst()
+            val song = Song()
+            song.id = cursor.getInt(cursor.getColumnIndex("id"))
+            song.nombre = cursor.getString(cursor.getColumnIndex("nombre"))
+            song.autor = cursor.getString(cursor.getColumnIndex("autor"))
+            song.album = cursor.getString(cursor.getColumnIndex("album"))
+
+            onShowEditSong(song)
+        }
+
+        builder.setNegativeButton("Eliminar"){_,_ ->
+            activity!!.contentResolver .delete( Uri.withAppendedPath(Constants.SONG_URI,position.toString()),null,null)
+            App.instance.showToast("Eliminado")
+            loadSongs()
         }
 
         builder.setNeutralButton("Cancelar"){_,_ ->
@@ -91,5 +128,9 @@ class ListActivityFragment : Fragment(), CustomRecyclerAdapter.OnItemClicked, So
         dialog.show()
 
         return true
+    }
+
+    interface ListInteractionListener {
+        fun onShowEditSong(song:Song)
     }
 }

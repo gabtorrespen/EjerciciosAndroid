@@ -36,8 +36,8 @@ class CustomRecyclerAdapter(private val listener: OnItemClicked): RecyclerView.A
         holder.authorTextView!!.text = myDataset?.getString(myDataset!!.getColumnIndex("autor"))
         holder.albumTextView!!.text = myDataset?.getString(myDataset!!.getColumnIndex("album"))
 
+        val id =  myDataset?.getString(myDataset!!.getColumnIndex("id"))
         holder.mView.setOnLongClickListener {view ->
-            val id =  myDataset?.getString(myDataset!!.getColumnIndex("id"))
             listener.onLongItemClick(id?.toInt() ?: 0,view)
         }
     }

@@ -42,7 +42,7 @@ class AppProvider: ContentProvider()  {
         when (uriType) {
             SONG_ID -> {
                 queryBuilder.tables = DBHelper.SONG_TABLE_NAME
-                queryBuilder.appendWhere(DBHelper.JOKE_COLUMN_ID + "="
+                queryBuilder.appendWhere(DBHelper.SONG_COLUMN_ID + "="
                         + uri!!.lastPathSegment)
             }
             SONG -> {
@@ -104,8 +104,22 @@ class AppProvider: ContentProvider()  {
         return values!!.size
     }
 
-    override fun update(p0: Uri?, p1: ContentValues?, p2: String?, p3: Array<out String>?): Int {
-        throw IllegalArgumentException("Unknown URI")
+    override fun update(uri: Uri?, values: ContentValues?, where: String?, whereArgs: Array<out String>?): Int {
+        val table: String
+        val uriType = sUriMatcher.match(uri)
+        val sqlDB = myDB!!.writableDatabase
+        var selection = where
+
+        when (uriType) {
+            SONG_ID -> {
+                table = DBHelper.SONG_TABLE_NAME
+                selection = DBHelper.SONG_COLUMN_ID + "=" + uri!!.lastPathSegment
+            }
+            else -> throw IllegalArgumentException("Unknown URI")
+        }
+        val count = sqlDB.update(table, values, selection,whereArgs)
+        context.contentResolver.notifyChange(uri, null)
+        return count
     }
 
     override fun delete(uri: Uri?, where: String?, whereArgs: Array<out String>?): Int {
@@ -119,7 +133,7 @@ class AppProvider: ContentProvider()  {
             }
             SONG_ID -> {
                 table = DBHelper.SONG_TABLE_NAME
-                selection = DBHelper.JOKE_COLUMN_ID + "=" + uri!!.lastPathSegment
+                selection = DBHelper.SONG_COLUMN_ID + "=" + uri!!.lastPathSegment
             }
             else -> throw IllegalArgumentException("Unknown URI")
         }

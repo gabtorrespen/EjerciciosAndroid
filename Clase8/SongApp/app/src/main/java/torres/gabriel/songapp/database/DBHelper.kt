@@ -16,7 +16,7 @@ class DBHelper  : OrmLiteSqliteOpenHelper(App.instance,
 
         //Song
         val SONG_TABLE_NAME = "Song"
-        val JOKE_COLUMN_ID = "id"
+        val SONG_COLUMN_ID = "id"
     }
 
     override fun onCreate(database: SQLiteDatabase?,
